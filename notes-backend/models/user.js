@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note',
+      ref: 'notes',
     },
   ],
 })
@@ -26,6 +26,6 @@ userSchema.set('toJSON', {
   },
 })
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('users', userSchema)
 
 module.exports = User
