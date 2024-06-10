@@ -1,30 +1,30 @@
 import { useState, useEffect } from 'react'
-import Note from "./components/Note"
+import Note from './components/Note'
 import noteService from './services/notes'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     console.log('effect')
-    noteService
-      .getAll()
-      .then(initialNotes => {
-        console.log('promise fulfilled')
-        setNotes(initialNotes)
-      })
+    noteService.getAll().then((initialNotes) => {
+      console.log('promise fulfilled')
+      setNotes(initialNotes)
+    })
   }, [])
 
   console.log('render', notes.length, 'notes')
 
   const notesToShow = showAll
     ? notes
-    : notes.filter(note => note.important === true)
+    : notes.filter((note) => note.important === true)
 
   const addNote = (event) => {
     event.preventDefault()
@@ -34,23 +34,16 @@ const App = (props) => {
       id: notes.length + 1,
     }
 
-    noteService
-      .create(noteObject)
-      .then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
-      })
-  }
-
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote))
+      setNewNote('')
+    })
   }
 
   const toggleImportanceOf = (id) => {
-    const note = notes.find(n => n.id === id)
+    const note = notes.find((n) => n.id === id)
     const changedNote = { ...note, important: !note.important }
-  
+
     noteService
       .update(id, changedNote)
       .then((returnedNote) => {
@@ -67,24 +60,51 @@ const App = (props) => {
       })
   }
 
+  const handleLogin = async (username, password) => {
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+
+      {user === null ? (
+        <LoginForm handleLogin={handleLogin} />
+      ) : (
+        <div>
+          <p>{user.name} logged-in</p>
+          <NoteForm addNote={addNote} />
+        </div>
+      )}
+
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? 'important' : 'all'}
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
-        )}
+        {notesToShow.map((note) => (
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          />
+        ))}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
       <Footer />
     </div>
   )
