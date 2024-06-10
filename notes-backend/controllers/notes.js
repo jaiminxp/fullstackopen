@@ -40,6 +40,7 @@ notesRouter.post('/', async (request, response, next) => {
     content: body.content,
     important: body.important || false,
     user: user.id,
+    date: new Date().toISOString(),
   })
 
   const savedNote = await note.save()
@@ -62,7 +63,9 @@ notesRouter.put('/:id', async (request, response, next) => {
     important: body.important,
   }
 
-  await Note.findByIdAndUpdate(request.params.id, note, { new: true })
+  const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
+    new: true,
+  })
   response.json(updatedNote)
 })
 
