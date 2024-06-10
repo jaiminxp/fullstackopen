@@ -5,6 +5,7 @@ import Notification from './components/Notification'
 import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import NoteForm from './components/NoteForm'
+import loginService from './services/login'
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
@@ -35,18 +36,14 @@ const App = (props) => {
     ? notes
     : notes.filter((note) => note.important === true)
 
-  const addNote = (event) => {
-    event.preventDefault()
+  const addNote = async (newNote) => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      id: notes.length + 1,
     }
 
-    noteService.create(noteObject).then((returnedNote) => {
-      setNotes(notes.concat(returnedNote))
-      setNewNote('')
-    })
+    const returnedNote = await noteService.create(noteObject)
+    setNotes(notes.concat(returnedNote))
   }
 
   const toggleImportanceOf = (id) => {
@@ -79,14 +76,17 @@ const App = (props) => {
       window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
       noteService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedNoteappUser')
+    setUser(null)
   }
 
   return (
@@ -98,6 +98,7 @@ const App = (props) => {
         <LoginForm handleLogin={handleLogin} />
       ) : (
         <div>
+          <button onClick={handleLogout}>Logout</button>
           <p>{user.name} logged-in</p>
           <NoteForm addNote={addNote} />
         </div>

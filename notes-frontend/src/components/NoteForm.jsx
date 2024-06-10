@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
 const NoteForm = ({ addNote }) => {
-  const [newNote, setNewNote] = useState('a new note...')
+  const [newNote, setNewNote] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    addNote(newNote)
+    await addNote(newNote)
+    setNewNote('')
   }
 
   const handleNoteChange = (event) => {
@@ -15,7 +16,11 @@ const NoteForm = ({ addNote }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={newNote} onChange={handleNoteChange} />
+      <input
+        value={newNote}
+        onChange={handleNoteChange}
+        placeholder="a new note..."
+      />
       <button type="submit">save</button>
     </form>
   )

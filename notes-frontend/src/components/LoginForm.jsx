@@ -4,9 +4,11 @@ const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    handleLogin(username, password)
+    await handleLogin(username, password)
+    setUsername('')
+    setPassword('')
   }
 
   return (
