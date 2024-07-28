@@ -11,6 +11,8 @@ test('renders content', () => {
 
   const div = container.querySelector('.note')
 
+  screen.debug(div)
+
   expect(div).toHaveTextContent(
     'Component testing is done with react-testing-library'
   )
