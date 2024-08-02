@@ -17,8 +17,8 @@ describe('Note app', () => {
     await page.goto('http://localhost:5173')
 
     await page.getByRole('button', { name: 'login' }).click()
-    await page.getByRole('textbox').first().fill('admin')
-    await page.getByRole('textbox').last().fill('admin123')
+    await page.getByTestId('username').fill('admin')
+    await page.getByTestId('password').fill('admin123')
     await page.getByRole('button', { name: 'login' }).click()
 
     await expect(page.getByText('Jaimin logged-in')).toBeVisible()
