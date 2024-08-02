@@ -34,7 +34,9 @@ describe('Note app', () => {
 
     test('a new note can be created', async ({ page }) => {
       await page.getByRole('button', { name: 'new note' }).click()
-      await page.getByRole('textbox').fill('a note created by playwright')
+      await page
+        .getByTestId('note-content')
+        .fill('a note created by playwright')
       await page.getByRole('button', { name: 'save' }).click()
 
       await expect(page.getByText('a note created by playwright')).toBeVisible()
