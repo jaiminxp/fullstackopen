@@ -33,6 +33,15 @@ describe('Note app', () => {
     await expect(page.getByText('Jaimin logged-in')).toBeVisible()
   })
 
+  test('login fails with wrong password', async ({ page }) => {
+    await page.getByRole('button', { name: 'login' }).click()
+    await page.getByTestId('username').fill('admin')
+    await page.getByTestId('password').fill('wrong')
+    await page.getByRole('button', { name: 'login' }).click()
+
+    await expect(page.getByText('wrong credentials')).toBeVisible()
+  })
+
   describe('when logged in', () => {
     beforeEach(async ({ page }) => {
       await page.getByRole('button', { name: 'login' }).click()
