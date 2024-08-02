@@ -33,6 +33,9 @@ describe('Note app', () => {
     await expect(page.getByText('Jaimin logged-in')).toBeVisible()
   })
 
+  // use test.only to run a single test
+  // or use npm test -- -g "<test name>"
+
   test('login fails with wrong password', async ({ page }) => {
     await page.getByRole('button', { name: 'login' }).click()
     await page.getByTestId('username').fill('admin')
