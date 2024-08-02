@@ -15,7 +15,7 @@ describe('Note app', () => {
     ).toBeVisible()
   })
 
-  test('login form can be opened', async ({ page }) => {
+  test('user can log in', async ({ page }) => {
     await page.getByRole('button', { name: 'login' }).click()
     await page.getByTestId('username').fill('admin')
     await page.getByTestId('password').fill('admin123')
