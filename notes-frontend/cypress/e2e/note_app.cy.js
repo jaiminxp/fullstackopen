@@ -56,20 +56,28 @@ describe('Note app', function () {
       cy.contains('a note created by cypress')
     })
 
-    describe('and a note exists', function () {
+    describe('several notes exist', function () {
       beforeEach(function () {
+        cy.login({ username: 'admin', password: 'admin123' })
         cy.createNote({
-          content: 'another note by cypress',
+          content: 'first note',
+          important: true,
+        })
+        cy.createNote({
+          content: 'second note',
+          important: true,
+        })
+        cy.createNote({
+          content: 'third note',
           important: true,
         })
       })
 
       it('importance can be changed', function () {
-        cy.contains('li', 'another note by cypress')
-          .contains('make not important')
-          .click()
+        cy.contains('second note').parent().find('button').as('theButton')
 
-        cy.contains('li', 'another note by cypress').contains('make important')
+        cy.get('@theButton').click()
+        cy.get('@theButton').should('contain', 'make important')
       })
     })
   })
