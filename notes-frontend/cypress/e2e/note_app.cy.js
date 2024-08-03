@@ -42,5 +42,21 @@ describe('Note app', function () {
       cy.contains('save').click()
       cy.contains('a note created by cypress')
     })
+
+    describe('and a note exists', function () {
+      beforeEach(function () {
+        cy.contains('new note').click()
+        cy.get('input').type('another note by cypress')
+        cy.contains('save').click()
+      })
+
+      it('importance can be changed', function () {
+        cy.contains('li', 'another note by cypress')
+          .contains('make not important')
+          .click()
+
+        cy.contains('li', 'another note by cypress').contains('make important')
+      })
+    })
   })
 })
