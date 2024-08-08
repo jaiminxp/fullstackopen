@@ -3,7 +3,7 @@ import { toggleImportanceOf } from '../reducers/noteReducer'
 
 const Note = ({ note, handleClick }) => {
   return (
-    <li onClick={handleClick}>
+    <li style={{ cursor: 'pointer' }} onClick={handleClick}>
       {note.content}
       <strong> {note.important ? 'important' : ''}</strong>
     </li>
