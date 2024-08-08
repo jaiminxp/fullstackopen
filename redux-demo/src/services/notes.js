@@ -7,4 +7,23 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const createNew = async (content) => {
+  const payload = {
+    content,
+    important: false,
+  }
+
+  const response = await axios.post(baseUrl, payload)
+  return response.data
+}
+
+const toggleImportance = async (id, currentImportant) => {
+  const payload = {
+    important: !currentImportant,
+  }
+
+  const res = await axios.patch(`${baseUrl}/${id}`, payload)
+  return res.data
+}
+
+export default { getAll, createNew, toggleImportance }
