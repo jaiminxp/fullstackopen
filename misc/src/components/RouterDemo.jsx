@@ -1,4 +1,11 @@
-import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useMatch,
+  Navigate,
+} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
@@ -161,7 +168,10 @@ const RouterDemo = () => {
       <Routes>
         <Route path="/notes/:id" element={<Note note={note} />} />
         <Route path="/notes" element={<Notes notes={notes} />} />
-        <Route path="/users" element={<Users />} />
+        <Route
+          path="/users"
+          element={user ? <Users /> : <Navigate replace to="/login" />}
+        />
         <Route path="/login" element={<Login onLogin={login} />} />
         <Route path="/" element={<Home />} />
       </Routes>
