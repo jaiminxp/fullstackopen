@@ -1,18 +1,10 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useParams,
-  useNavigate,
-} from 'react-router-dom'
+import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
 const Notes = ({ notes }) => {
   return (
     <div>
-      Notes
       <h2>Notes</h2>
       <ul>
         {notes.map((note) => (
@@ -28,16 +20,13 @@ const Notes = ({ notes }) => {
 Notes.propTypes = {
   notes: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
       content: PropTypes.string.isRequired,
     })
   ),
 }
 
-const Note = ({ notes }) => {
-  const id = useParams().id
-  const note = notes.find((n) => n.id === Number(id))
-
+const Note = ({ note }) => {
   return (
     <div>
       <h2>{note.content}</h2>
@@ -50,12 +39,12 @@ const Note = ({ notes }) => {
 }
 
 Note.propTypes = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-    })
-  ),
+  note: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
+    important: PropTypes.bool.isRequired,
+  }),
 }
 
 const Users = () => (
@@ -134,6 +123,12 @@ const RouterDemo = () => {
 
   const [user, setUser] = useState(null)
 
+  const match = useMatch('/notes/:id')
+
+  const note = match
+    ? notes.find((note) => note.id === Number(match.params.id))
+    : null
+
   const login = (user) => {
     setUser(user)
   }
@@ -143,7 +138,7 @@ const RouterDemo = () => {
   }
 
   return (
-    <Router>
+    <div>
       <div>
         <Link style={padding} to="/">
           home
@@ -164,6 +159,7 @@ const RouterDemo = () => {
       </div>
 
       <Routes>
+        <Route path="/notes/:id" element={<Note note={note} />} />
         <Route path="/notes" element={<Notes notes={notes} />} />
         <Route path="/users" element={<Users />} />
         <Route path="/login" element={<Login onLogin={login} />} />
@@ -171,7 +167,7 @@ const RouterDemo = () => {
       </Routes>
 
       <div>Note app, Department of Computer Science 2024</div>
-    </Router>
+    </div>
   )
 }
 
