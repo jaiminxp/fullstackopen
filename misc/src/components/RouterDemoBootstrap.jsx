@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { Table, Form, Button } from 'react-bootstrap'
+import { Table, Form, Button, Alert } from 'react-bootstrap'
 
 const Notes = ({ notes }) => {
   return (
@@ -141,6 +141,7 @@ const RouterDemoBootstrap = () => {
   ])
 
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const match = useMatch('/notes/:id')
 
@@ -150,6 +151,10 @@ const RouterDemoBootstrap = () => {
 
   const login = (user) => {
     setUser(user)
+    setMessage(`welcome ${user}`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 10000)
   }
 
   const padding = {
@@ -158,6 +163,7 @@ const RouterDemoBootstrap = () => {
 
   return (
     <div className="container">
+      {message && <Alert variant="success">{message}</Alert>}
       <div>
         <Link style={padding} to="/">
           home
