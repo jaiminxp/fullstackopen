@@ -16,6 +16,8 @@ import {
   TableRow,
   TableCell,
   Paper,
+  TextField,
+  Button,
 } from '@mui/material'
 
 const Notes = ({ notes }) => {
@@ -97,12 +99,14 @@ const Login = (props) => {
       <h2>login</h2>
       <form onSubmit={onSubmit}>
         <div>
-          username: <input />
+          <TextField label="username" />
         </div>
         <div>
-          password: <input type="password" />
+          <TextField label="password" type="password" />
         </div>
-        <button type="submit">login</button>
+        <Button variant="contained" color="primary" type="submit">
+          login
+        </Button>
       </form>
     </div>
   )
