@@ -18,6 +18,7 @@ import {
   Paper,
   TextField,
   Button,
+  Alert,
 } from '@mui/material'
 
 const Notes = ({ notes }) => {
@@ -151,6 +152,7 @@ const RouterDemoMUI = () => {
   ])
 
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const match = useMatch('/notes/:id')
 
@@ -160,6 +162,10 @@ const RouterDemoMUI = () => {
 
   const login = (user) => {
     setUser(user)
+    setMessage(`welcome ${user}`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 10000)
   }
 
   const padding = {
@@ -168,6 +174,7 @@ const RouterDemoMUI = () => {
 
   return (
     <Container>
+      {message && <Alert severity="success">{message}</Alert>}
       <div>
         <Link style={padding} to="/">
           home
