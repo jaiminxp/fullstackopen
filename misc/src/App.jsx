@@ -3,13 +3,14 @@ import RouterDemo from './components/RouterDemo'
 import CustomHookDemo from './components/CustomHookDemo'
 import RouterDemoBootstrap from './components/RouterDemoBootstrap'
 import RouterDemoMUI from './components/RouterDemoMUI'
+import RouterDemoStyled from './components/RouterDemoStyled'
 
 function App() {
   return (
     <>
       {/* <CustomHookDemo /> */}
       <Router>
-        <RouterDemoMUI />
+        <RouterDemoStyled />
       </Router>
     </>
   )
